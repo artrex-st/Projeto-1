@@ -565,6 +565,10 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+<<<<<<< Updated upstream
+=======
+  - component: {fileID: 519420030}
+>>>>>>> Stashed changes
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -580,6 +584,23 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+<<<<<<< Updated upstream
+=======
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcd81d90447f0948927f68086229156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerTransform: {fileID: 0}
+  CameraTransform: {fileID: 0}
+>>>>>>> Stashed changes
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -835,7 +856,11 @@ GameObject:
   - component: {fileID: 902918765}
   - component: {fileID: 902918766}
   m_Layer: 0
+<<<<<<< Updated upstream
   m_Name: Foot
+=======
+  m_Name: Testes
+>>>>>>> Stashed changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1302,11 +1327,19 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
+<<<<<<< Updated upstream
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
+=======
+  m_UseAutoMass: 1
+  m_Mass: 0.7854982
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 2
+>>>>>>> Stashed changes
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1406,9 +1439,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+<<<<<<< Updated upstream
   JumpForce: 5
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
   BcPlayer: {fileID: 902918766}
+=======
+  JumpForce: 10
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+>>>>>>> Stashed changes
   teste: 0
