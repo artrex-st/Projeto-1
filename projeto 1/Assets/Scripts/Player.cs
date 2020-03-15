@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public float speed = 10.0f, JumpForce = 10.0f;
+    public float speed = 10.0f, JumpForce = 10.0f,testeVelocidade;
+    public bool canMove=true;
     public LayerMask GroundLayer;
     private Rigidbody2D rb;
     //public BoxCollider2D BcPlayer;
-    public bool teste;
+    public string teste;
 
     void Start()
     {
@@ -19,26 +20,67 @@ public class Player : MonoBehaviour
     //  ##  ##  ##  ##  ##  ##  ## //
     void Update()
     {
-        float translation = Input.GetAxis("Horizontal") * speed;
-        rb.velocity = new Vector2(translation, rb.velocity.y);
-        if (Input.GetKeyDown("space") && fIsground())
+        if (fIsGround())
+            canMove = true;
+
+        float translation;
+        if (Input.GetButton("Fire3"))
+            translation = Input.GetAxis("Horizontal") * speed * 2;
+        else
+            translation = Input.GetAxis("Horizontal") * speed;
+        if (fIsWall() == "Left" && translation <0 && canMove)
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        else
+        if (fIsWall() == "Right" && translation > 0 && canMove)
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        else
+        if (canMove)
+            rb.velocity = new Vector2(translation, rb.velocity.y);
+
+
+        if (Input.GetButtonDown("Jump"))
             Jump();
-        teste = fIsground();
-
-
+        //****************        TESTES          *********************\\
+        teste = fIsWall();
+        testeVelocidade = translation;
     }
     void Jump()
     {
-        rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x-(Time.deltaTime*1.2f),rb.velocity.y);
+        if (fIsWall() == "" && fIsGround())
+        {
+            rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+            canMove = true;
+        }
+        else
+            canMove = false;
+        if (fIsWall() == "Left")
+            rb.AddForce(new Vector2(JumpForce/2, JumpForce), ForceMode2D.Impulse);
+        else
+        if (fIsWall() == "Right")
+            rb.AddForce(new Vector2(JumpForce/-2, JumpForce), ForceMode2D.Impulse);
+
     }
-    private bool fIsground()
+    private bool fIsGround()
     {
-        return Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.5f, transform.localScale.y*0.9f), 0, Vector2.down,0.1f, GroundLayer);  
+        return Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.4f, transform.localScale.y*0.9f), 0, Vector2.down,0.1f, GroundLayer);  
+    }
+    private string fIsWall()
+    {
+        if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.9f, transform.localScale.y * 0.4f), 0, Vector2.left, 0.1f, GroundLayer))
+            return "Left";
+        else
+            if(Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.9f, transform.localScale.y * 0.4f), 0, Vector2.right, 0.1f, GroundLayer))
+                return "Right";
+            else
+                return "";
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(transform.localScale.x*0.5f, transform.localScale.y* 1.01f));
+        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(transform.localScale.x * 0.4f, transform.localScale.y * 0.9f));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(transform.localScale.x * 0.9f, transform.localScale.y * 0.4f));
     }
 }
