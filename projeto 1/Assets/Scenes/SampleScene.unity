@@ -901,7 +901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  JumpForce: 30
+  JumpForce: 15
   sizeMorph: 1.2
   testeVelocidade: 0
   canMove: 1
@@ -910,6 +910,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   BodySize: {fileID: 1847271397}
+  AnimatorPlayer: {fileID: 0}
   teste: 
 --- !u!212 &1847271395
 SpriteRenderer:

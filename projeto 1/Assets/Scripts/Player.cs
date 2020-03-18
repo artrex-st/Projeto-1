@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public LayerMask GroundLayer;
     private Rigidbody2D rb;
     public CapsuleCollider2D BodySize;
+    private SpriteRenderer SpritePlayer;
+    public Animator AnimatorPlayer;
 
     //public BoxCollider2D BcPlayer;
     public string teste;
@@ -18,6 +20,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         BodySize = GetComponent<CapsuleCollider2D>();
+        SpritePlayer = GetComponent<SpriteRenderer>();
+        AnimatorPlayer = GetComponent<Animator>();
         //BcPlayer = GetComponentInChildren<BoxCollider2D>();
     }
     //  ##  ##  ##  ##  ##  ##  ## //
@@ -27,6 +31,7 @@ public class Player : MonoBehaviour
             canMove = true;
 
         float translation;
+
         if (Input.GetButton("Fire3") && !isCrouch)
             translation = Input.GetAxis("Horizontal") * speed * 2;
         else
@@ -48,6 +53,18 @@ public class Player : MonoBehaviour
             translation = Input.GetAxis("Horizontal") * speed/2;
                 else
                 translation = Input.GetAxis("Horizontal") * speed;
+
+        //flip
+        if (translation < 0)
+            SpritePlayer.flipX = true;
+        else
+            SpritePlayer.flipX = false;
+        // animator move
+        AnimatorPlayer.SetFloat("IsMove", Mathf.Abs(translation));
+        
+
+
+
 
 
 
