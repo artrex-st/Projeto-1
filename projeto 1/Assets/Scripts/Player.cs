@@ -9,12 +9,15 @@ public class Player : MonoBehaviour
     public bool canMove = true, isCrouch = false;
     public LayerMask GroundLayer;
     private Rigidbody2D rb;
+    public CapsuleCollider2D BodySize;
+
     //public BoxCollider2D BcPlayer;
     public string teste;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        BodySize = GetComponent<CapsuleCollider2D>();
         //BcPlayer = GetComponentInChildren<BoxCollider2D>();
     }
     //  ##  ##  ##  ##  ##  ##  ## //
@@ -29,16 +32,14 @@ public class Player : MonoBehaviour
         else
         if (Input.GetButtonDown("Fire1"))
         {
-            Transform BodySize = GetComponent<Transform>();
-            BodySize.localScale /= sizeMorph;
+            BodySize.size /= sizeMorph;
             translation = Input.GetAxis("Horizontal") * speed / 4;
             isCrouch = true;
         }
         else
         if (Input.GetButtonUp("Fire1") && isCrouch)
         {
-            Transform BodySize = GetComponent<Transform>();
-            BodySize.localScale *= sizeMorph;
+            BodySize.size *= sizeMorph;
             translation = Input.GetAxis("Horizontal") * speed;
             isCrouch = false;
         }
@@ -84,14 +85,14 @@ public class Player : MonoBehaviour
     }
     private bool fIsGround()
     {
-        return Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.4f, transform.localScale.y * 0.9f), 0, Vector2.down, 0.1f, GroundLayer);
+        return Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.4f, BodySize.size.y * 0.9f), 0, Vector2.down, 0.1f, GroundLayer);
     }
     private string fIsWall()
     {
-        if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.9f, transform.localScale.y * 0.4f), 0, Vector2.left, 0.1f, GroundLayer))
+        if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.9f, BodySize.size.y * 0.4f), 0, Vector2.left, 0.1f, GroundLayer))
             return "Left";
         else
-            if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(transform.localScale.x * 0.9f, transform.localScale.y * 0.4f), 0, Vector2.right, 0.1f, GroundLayer))
+            if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.9f, BodySize.size.y * 0.4f), 0, Vector2.right, 0.1f, GroundLayer))
             return "Right";
         else
             return "";
@@ -100,8 +101,8 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(transform.localScale.x * 0.4f, transform.localScale.y * 0.9f));
+        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(BodySize.size.x * 0.4f, BodySize.size.y * 0.9f));
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(transform.localScale.x * 0.9f, transform.localScale.y * 0.4f));
+        Gizmos.DrawWireCube(new Vector3(transform.localPosition.x, transform.localPosition.y, 0), new Vector3(BodySize.size.x * 0.9f, transform.localScale.y * 0.4f));
     }
 }
