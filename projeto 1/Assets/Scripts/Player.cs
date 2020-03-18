@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
         if (translation < 0)
             SpritePlayer.flipX = true;
         else
+            if (translation > 0)
             SpritePlayer.flipX = false;
         // animator move
         AnimatorPlayer.SetFloat("IsMove", Mathf.Abs(translation));
