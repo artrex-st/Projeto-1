@@ -62,13 +62,16 @@ public class Player : MonoBehaviour
             SpritePlayer.flipX = false;
         // animator move
         AnimatorPlayer.SetFloat("IsMove", Mathf.Abs(translation));
-        
 
 
 
 
 
 
+        if(fIsGround())
+            AnimatorPlayer.SetBool("onAir",false);
+        else
+            AnimatorPlayer.SetBool("onAir", true);
         if (fIsWall() == "Left" && translation < 0 && canMove && !isCrouch)
             rb.velocity = new Vector2(0, rb.velocity.y);
         else
@@ -91,14 +94,22 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
             canMove = true;
+            AnimatorPlayer.SetTrigger("Jump");
         }
         else
             canMove = false;
         if (fIsWall() == "Left")
+        {
             rb.AddForce(new Vector2(JumpForce / 2, JumpForce), ForceMode2D.Impulse);
+            AnimatorPlayer.SetTrigger("WallJump");
+        }
         else
             if (fIsWall() == "Right")
-            rb.AddForce(new Vector2(JumpForce / -2, JumpForce), ForceMode2D.Impulse);
+            {
+                rb.AddForce(new Vector2(JumpForce / -2, JumpForce), ForceMode2D.Impulse);
+                AnimatorPlayer.SetTrigger("WallJump");
+            }
+
 
     }
     private bool fIsGround()
@@ -107,10 +118,10 @@ public class Player : MonoBehaviour
     }
     private string fIsWall()
     {
-        if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.9f, BodySize.size.y * 0.4f), 0, Vector2.left, 0.1f, GroundLayer))
+        if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.9f, BodySize.size.y * 0.8f), 0, Vector2.left, 0.1f, GroundLayer))
             return "Left";
         else
-            if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.9f, BodySize.size.y * 0.4f), 0, Vector2.right, 0.1f, GroundLayer))
+            if (Physics2D.BoxCast(new Vector2(transform.localPosition.x, transform.localPosition.y), new Vector2(BodySize.size.x * 0.9f, BodySize.size.y * 0.8f), 0, Vector2.right, 0.1f, GroundLayer))
             return "Right";
         else
             return "";
