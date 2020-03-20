@@ -37,6 +37,6 @@ public class Data : MonoBehaviour
     {
         //string x = map + cont;
         //if(Application.loadedLevelName != x)
-        recarga -= Time.deltaTime;
+        recarga += Time.deltaTime;
     }
 }
