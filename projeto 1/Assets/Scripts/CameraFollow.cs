@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-	public Rigidbody2D PlayerTransform; // Player Transform
-	public Transform CameraTransform; // Camera Transform
+	//public Rigidbody2D ; // Player Transform
+	public Transform CameraTransform, PlayerTransform; // Camera Transform
 	//public GameObject PlayerObject; // Capturar obj Do player
 
 
 	// Use this for initialization
 	void Start()
 	{
-		PlayerTransform = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+		PlayerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
 		CameraTransform = GetComponent<Transform>();
 
 	}
