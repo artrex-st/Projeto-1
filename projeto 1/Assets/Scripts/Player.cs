@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     public CapsuleCollider2D BodySize;
     private SpriteRenderer SpritePlayer;
-    public Animator AnimatorPlayer;
+    //public Animator AnimatorPlayer;
     public float CD;
     public HealthBar HealthUI;
 
@@ -38,8 +38,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         BodySize = GetComponent<CapsuleCollider2D>();
         SpritePlayer = GetComponent<SpriteRenderer>();
-        AnimatorPlayer = GetComponent<Animator>();
-        //BcPlayer = GetComponentInChildren<BoxCollider2D>();
+        //AnimatorPlayer = GetComponent<Animator>();
+
         HealthUI.SetMaxHealth(MaxHp);
         CurrHP = MaxHp;
 
@@ -51,14 +51,14 @@ public class Player : MonoBehaviour
         if (fIsGround())
         {
             canMove = true;
-            AnimatorPlayer.SetTrigger("IsGround");
+            //AnimatorPlayer.SetTrigger("IsGround");
         }
 
         //
-        if(fIsGround())
-            AnimatorPlayer.SetBool("onAir",false);
-        else
-            AnimatorPlayer.SetBool("onAir", true);  
+        //if (fIsGround())
+        //    AnimatorPlayer.SetBool("onAir", false);
+        //else
+        //    AnimatorPlayer.SetBool("onAir", true);
         //
         if (Input.GetButton("Fire3") && !isCrouch) //run
             Moving = Input.GetAxis("Horizontal") * speed * 2;
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
             if (Moving > 0)
             SpritePlayer.flipX = false;
         // animator move
-        AnimatorPlayer.SetFloat("IsMove", Mathf.Abs(Moving));
+        // AnimatorPlayer.SetFloat("IsMove", Mathf.Abs(Moving));
                                    
         // Move OK
         if (canMove)
@@ -96,20 +96,17 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(new Vector2(0, JumpForce * 1.2f), ForceMode2D.Impulse);
             canMove = true;
-            AnimatorPlayer.SetTrigger("Jump");
+            //AnimatorPlayer.SetTrigger("Jump");
         }
         else
             if (fIsGround() && PowerJump)
             {
                 rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
                 canMove = true;
-                AnimatorPlayer.SetTrigger("Jump");
+                //AnimatorPlayer.SetTrigger("Jump");
             }
             else
                 canMove = false;
-        CurrHP -= 20;
-        HealthUI.SetHealth(CurrHP);
-
     }
     private bool fIsGround()
     {
@@ -126,6 +123,12 @@ public class Player : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(PositionPlayer(), new Vector3(BodySize.size.x * 0.9f, transform.localScale.y * 0.4f));
         
+    }
+    private void OnCollisionEnter2D(Collision2D Coll)
+    {
+        if(Coll.gameObject.tag.Equals("Enemy"))
+            CurrHP -= 20;
+        HealthUI.SetHealth(CurrHP);
     }
 }
 
