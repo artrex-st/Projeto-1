@@ -7,6 +7,7 @@ public class Data : MonoBehaviour
 
     public static string map = "fase";
     public static int cont = 0;
+    [Range(0.0f, 5.0f)]
     public static float recarga = 1;
     public GameObject[] datas;
     public static AudioClip[] musicas;

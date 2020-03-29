@@ -10,13 +10,17 @@ public class Player : MonoBehaviour
 
     public float
         MaxHp = 100,
-        speed = 10.0f, 
-        JumpForce = 10.0f,
-        sizeMorph=1.5f, 
+        CurrHP,
+        TipeWeapon;
+    [Range(0.0f, 10.0f)]
+    public float
+        speed = 10.0f,
+        JumpForce = 10.0f, 
         testeVelocidade, 
         Moving;
-    private float
-        CurrHP;
+    [Range(0.0f, 3.0f)]
+    public float
+        sizeMorph=1.5f;
     public bool 
         canMove = true, 
         isCrouch = false;
@@ -27,19 +31,24 @@ public class Player : MonoBehaviour
     public CapsuleCollider2D BodySize;
     private SpriteRenderer SpritePlayer;
     //public Animator AnimatorPlayer;
-    public float CD;
     public HealthBar HealthUI;
 
     //public BoxCollider2D BcPlayer;
-    public string teste;
+    public float teste;
+    public WeaponRange WeaponScript;
+    public WeaponMelee WeaponScriptM;
 
+    private void Awake()
+    {
+        //WeaponScriptM = GetComponentInChildren<WeaponMelee>();
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         BodySize = GetComponent<CapsuleCollider2D>();
         SpritePlayer = GetComponent<SpriteRenderer>();
         //AnimatorPlayer = GetComponent<Animator>();
-
+        WeaponScript = GetComponentInChildren<WeaponRange>();
         HealthUI.SetMaxHealth(MaxHp);
         CurrHP = MaxHp;
 
@@ -47,13 +56,11 @@ public class Player : MonoBehaviour
     //  ##  ##  ##  ##  ##  ##  ## //
     void Update()
     {
-        CD = Data.recarga;
         if (fIsGround())
         {
             canMove = true;
             //AnimatorPlayer.SetTrigger("IsGround");
         }
-
         //
         //if (fIsGround())
         //    AnimatorPlayer.SetBool("onAir", false);
@@ -64,13 +71,29 @@ public class Player : MonoBehaviour
             Moving = Input.GetAxis("Horizontal") * speed * 2;
         else
             Moving = Input.GetAxis("Horizontal") * speed; //Walk Base
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (WeaponSwith.SelectedWeapon==0)
+            {
+                WeaponScript.Shoot();
+                Data.recarga = 0;
+                return;
+            }
+            if (WeaponSwith.SelectedWeapon == 1)
+            {
+                WeaponScriptM.MeleeAttack();
+                Data.recarga = 0;
+                return;
+            }
 
+
+        }
         //flip Sprite
         if (Moving < 0)
-            SpritePlayer.flipX = true;
+            transform.rotation = new Quaternion(0,180,0,0);//SpritePlayer.flipX = true;
         else
             if (Moving > 0)
-            SpritePlayer.flipX = false;
+            transform.rotation = new Quaternion(0,0,0,0); //SpritePlayer.flipX = false;
         // animator move
         // AnimatorPlayer.SetFloat("IsMove", Mathf.Abs(Moving));
                                    
@@ -85,7 +108,7 @@ public class Player : MonoBehaviour
 
 
         //****************        TESTES          *********************\\
-        teste = "0";
+        //teste = "0";
         testeVelocidade = Moving;
     }
     void Jump(bool PowerJump)
